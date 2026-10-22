@@ -3,7 +3,7 @@ require_once __DIR__ . '/includes/products.php';
 
 $pageTitle  = 'Home';
 $activePage = 'home';
-include __DIR__ . '/includes/header.php';
+include __DIR__ . '/includes/head   er.php';
 ?>
 
     <section class="hero hero-video">

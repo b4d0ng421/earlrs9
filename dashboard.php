@@ -98,7 +98,7 @@ include __DIR__ . '/includes/header.php';
                         if ($status === 'shipped') $stepLevel = 3;
                         if ($status === 'completed') $stepLevel = 4;
                     ?>
-                    <div class="order-card" id="order-<?= (int) $order['id'] ?>" style="background: #fff; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                    <div class="order-card" id="order-<?= (int) $order['id'] ?>" style="background: #fff; color: #111; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
                         <!-- Header -->
                         <div style="display: flex; justify-content: space-between; padding: 15px 20px; border-bottom: 1px solid #eee; background: #fafafa;">
                             <div>

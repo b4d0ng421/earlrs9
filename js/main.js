@@ -33,6 +33,31 @@
     }
   }
 
+  // Track in-flight add-to-cart requests so a fast recorded replay
+  // (click "Add to Cart" then immediately click a link) never navigates
+  // away before the cart has actually been updated.
+  let pendingCartRequests = 0;
+  let queuedNavigation = null;
+
+  function finishCartRequest() {
+    pendingCartRequests = Math.max(0, pendingCartRequests - 1);
+    if (pendingCartRequests === 0 && queuedNavigation) {
+      const url = queuedNavigation;
+      queuedNavigation = null;
+      window.location.href = url;
+    }
+  }
+
+  document.addEventListener('click', (event) => {
+    if (pendingCartRequests === 0 || event.defaultPrevented) return;
+    const link = event.target instanceof Element ? event.target.closest('a[href]') : null;
+    if (!link || link.target === '_blank' || link.hasAttribute('download')) return;
+    const href = link.getAttribute('href') || '';
+    if (href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('tel:')) return;
+    event.preventDefault();
+    queuedNavigation = link.href;
+  });
+
   const navToggle = document.getElementById('nav-toggle');
   const siteNav = document.getElementById('site-nav');
 
@@ -82,6 +107,7 @@
       const originalText = button.textContent;
       button.disabled = true;
       button.textContent = 'Adding...';
+      pendingCartRequests += 1;
       hideToast();
 
       if (feedback) {
@@ -132,6 +158,7 @@
       } finally {
         button.disabled = false;
         button.textContent = originalText;
+        finishCartRequest();
       }
     });
   });

@@ -36,7 +36,7 @@ $total = 0;
                 <!-- Cart Items -->
                 <div style="flex: 2; min-width: 300px;">
                     <table id="cart-table" style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
-                        <tr style="border-bottom: 2px solid #333; text-align: left;">
+                        <tr style="border-bottom: 2px solid #555; text-align: left;">
                             <th style="padding: 10px;">Product</th>
                             <th style="padding: 10px;">Price</th>
                             <th style="padding: 10px;">Qty</th>
@@ -45,10 +45,12 @@ $total = 0;
                         </tr>
                         <?php foreach ($cart as $id => $item): ?>
                             <?php $subtotal = (float) $item['price'] * (int) $item['quantity']; $total += $subtotal; ?>
-                            <tr id="cart-row-<?= htmlspecialchars($id) ?>" style="border-bottom: 1px solid #ddd;">
-                                <td style="padding: 15px; display: flex; align-items: center; gap: 15px;">
-                                    <img src="<?= htmlspecialchars($item['image']) ?>" alt="" style="width: 60px; border-radius: 4px;">
-                                    <strong><?= htmlspecialchars($item['name']) ?></strong>
+                            <tr id="cart-row-<?= htmlspecialchars($id) ?>" style="border-bottom: 1px solid #444;">
+                                <td style="padding: 15px;">
+                                    <div style="display: flex; align-items: center; gap: 15px;">
+                                        <img src="<?= htmlspecialchars($item['image']) ?>" alt="" style="width: 60px; border-radius: 4px;">
+                                        <strong id="cart-name-<?= htmlspecialchars($id) ?>"><?= htmlspecialchars($item['name']) ?></strong>
+                                    </div>
                                 </td>
                                 <td style="padding: 15px;">₱<?= number_format((float) $item['price'], 2) ?></td>
                                 <td id="cart-qty-<?= htmlspecialchars($id) ?>" style="padding: 15px;"><?= (int) $item['quantity'] ?></td>
@@ -58,7 +60,7 @@ $total = 0;
                                         <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(csrfToken()) ?>">
                                         <input type="hidden" name="action" value="remove">
                                         <input type="hidden" name="id" value="<?= htmlspecialchars($id) ?>">
-                                        <button type="submit" id="remove-<?= htmlspecialchars($id) ?>" style="background: none; border: none; color: #666; text-decoration: underline; cursor: pointer;">Remove</button>
+                                        <button type="submit" id="remove-<?= htmlspecialchars($id) ?>" style="background: none; border: none; color: #bbb; text-decoration: underline; cursor: pointer;">Remove</button>
                                     </form>
                                 </td>
                             </tr>
@@ -67,7 +69,7 @@ $total = 0;
                 </div>
 
                 <!-- Checkout Summary -->
-                <div style="flex: 1; min-width: 250px; background: #f9f9f9; padding: 25px; border-radius: 8px; height: fit-content; border: 1px solid #ddd;">
+                <div style="flex: 1; min-width: 250px; background: #f9f9f9; color: #111; padding: 25px; border-radius: 8px; height: fit-content; border: 1px solid #ddd;">
                     <h3>Order Summary</h3>
                     <div style="display: flex; justify-content: space-between; margin: 15px 0; border-bottom: 1px solid #ddd; padding-bottom: 15px;">
                         <span>Total:</span>

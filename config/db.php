@@ -1,12 +1,14 @@
 <?php
 /**
- * Database connection.
- * Update these four values to match your hosting environment
- * (cPanel/phpMyAdmin will show you the DB name, user, and password
- * once you create the database there).
+ * RS8 Racing - InfinityFree database settings.
+ *
+ * Replace DB_HOST, DB_NAME and DB_PASS with the values shown in the
+ * InfinityFree control panel (MySQL Databases page).
+ * DB_PASS is your InfinityFree account password (vPanel password). The host is NOT localhost.
+ * Omit any :3306 port suffix.
  */
-define('DB_HOST', 'sql101.infinityfree.com');
-define('DB_NAME', 'if0_43240676_rs8');
+define('DB_HOST', 'sqlXXX.infinityfree.com');   // e.g. sql309.infinityfree.com
+define('DB_NAME', 'if0_43240676_rs8');          // full name incl. prefix
 define('DB_USER', 'if0_43240676');
 define('DB_PASS', 'YBaB8yL6BNz0xO');
 
@@ -18,12 +20,11 @@ try {
         [
             PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-            PDO::ATTR_EMULATE_PREPARES   => false, // real prepared statements
-            PDO::ATTR_TIMEOUT            => 5,     // don't hang if MySQL is stopped
+            PDO::ATTR_EMULATE_PREPARES   => false,
+            PDO::ATTR_TIMEOUT            => 10,
         ]
     );
 } catch (PDOException $e) {
-    // Keep the details in the server log, show visitors a generic message.
     error_log('RS8 database connection failed: ' . $e->getMessage());
     http_response_code(503);
 
