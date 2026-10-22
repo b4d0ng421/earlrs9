@@ -2,20 +2,31 @@
 require_once __DIR__ . '/config/db.php';
 require_once __DIR__ . '/includes/auth.php';
 
+$allowedNext = ['index.php', 'about.php', 'contact.php', 'cart.php', 'checkout.php', 'dashboard.php'];
+$next = postString('next') !== '' ? postString('next') : queryString('next');
+if (!in_array($next, $allowedNext, true)) {
+    $next = '';
+}
+
 // Already logged in? Send them where they belong.
 if (isLoggedIn()) {
-    header('Location: ' . (isAdmin() ? 'admin/dashboard.php' : 'dashboard.php'));
+    $redirect = $next !== ''
+        ? $next
+        : (isAdmin() ? 'admin/dashboard.php' : 'dashboard.php');
+
+    header('Location: ' . $redirect);
     exit;
 }
 
-$error = '';
+$error    = '';
+$username = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (!csrfCheck($_POST['csrf_token'] ?? null)) {
+    if (!csrfCheck(postString('csrf_token'))) {
         $error = 'Your session expired. Please try again.';
     } else {
-        $username = trim($_POST['username'] ?? '');
-        $password = $_POST['password'] ?? '';
+        $username = postString('username');
+        $password = postRawString('password');
 
         if ($username === '' || $password === '') {
             $error = 'Please enter both your username and password.';
@@ -24,13 +35,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt->execute([$username]);
             $user = $stmt->fetch();
 
-            if ($user && password_verify($password, $user['password_hash'])) {
+            if ($user && password_verify($password, (string) $user['password_hash'])) {
                 session_regenerate_id(true);
-                $_SESSION['user_id']  = $user['id'];
-                $_SESSION['username'] = $user['username'];
-                $_SESSION['role']     = $user['role'];
 
-                header('Location: ' . ($user['role'] === 'admin' ? 'admin/dashboard.php' : 'dashboard.php'));
+                $_SESSION['user_id']  = (int) $user['id'];
+                $_SESSION['username'] = (string) $user['username'];
+                $_SESSION['role']     = (string) $user['role'];
+
+                setFlash('success', 'Welcome back, ' . $user['username'] . '.');
+
+                $redirect = $next !== ''
+                    ? $next
+                    : ($_SESSION['role'] === 'admin' ? 'admin/dashboard.php' : 'dashboard.php');
+
+                header('Location: ' . $redirect);
                 exit;
             }
 
@@ -38,6 +56,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 }
+
+$logoutMessage = queryString('logged_out') === '1' ? 'You have been logged out.' : '';
 
 $pageTitle  = 'Login';
 $activePage = 'login';
@@ -53,16 +73,23 @@ include __DIR__ . '/includes/header.php';
 <section>
     <div class="container">
         <div class="auth-card">
-            <?php if ($error): ?>
-                <p class="form-message form-error"><?= htmlspecialchars($error) ?></p>
+            <?php if ($logoutMessage): ?>
+                <p class="form-message form-success" id="logout-message" role="status"><?= htmlspecialchars($logoutMessage) ?></p>
             <?php endif; ?>
 
-            <form method="post" novalidate>
+            <?php if ($error): ?>
+                <p class="form-message form-error" id="login-error" role="alert"><?= htmlspecialchars($error) ?></p>
+            <?php endif; ?>
+
+            <form method="post" id="login-form" novalidate>
                 <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(csrfToken()) ?>">
+                <?php if ($next !== ''): ?>
+                    <input type="hidden" name="next" value="<?= htmlspecialchars($next) ?>">
+                <?php endif; ?>
 
                 <div class="field">
                     <label for="username">Username</label>
-                    <input type="text" id="username" name="username" autocomplete="username" required>
+                    <input type="text" id="username" name="username" value="<?= htmlspecialchars($username) ?>" autocomplete="username" required>
                 </div>
 
                 <div class="field">
@@ -70,10 +97,10 @@ include __DIR__ . '/includes/header.php';
                     <input type="password" id="password" name="password" autocomplete="current-password" required>
                 </div>
 
-                <button type="submit" class="btn">Log In</button>
+                <button type="submit" class="btn" id="login-submit">Log In</button>
             </form>
 
-            <p class="auth-alt">Don't have an account? <a href="register.php">Register here</a></p>
+            <p class="auth-alt">Don't have an account? <a href="register.php" id="register-link">Register here</a></p>
         </div>
     </div>
 </section>

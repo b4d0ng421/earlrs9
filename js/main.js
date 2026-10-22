@@ -1,79 +1,196 @@
-const toggle = document.querySelector('.nav-toggle');
-const nav = document.querySelector('nav');
+(() => {
+  'use strict';
 
-if (toggle && nav) {
-  toggle.addEventListener('click', () => {
-    const isOpen = nav.classList.toggle('is-open');
-    toggle.classList.toggle('is-open', isOpen);
-    toggle.setAttribute('aria-expanded', String(isOpen));
-  });
+  const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
+  const toast = document.getElementById('site-toast');
+  let toastTimer = null;
 
-  nav.querySelectorAll('a').forEach(link => {
-    link.addEventListener('click', () => {
-      nav.classList.remove('is-open');
-      toggle.classList.remove('is-open');
-      toggle.setAttribute('aria-expanded', 'false');
+  function showToast(message, isError = false) {
+    if (!toast) return;
+
+    toast.textContent = message;
+    toast.classList.toggle('is-error', isError);
+    toast.hidden = false;
+
+    if (toastTimer) {
+      window.clearTimeout(toastTimer);
+    }
+
+    toastTimer = window.setTimeout(() => {
+      toast.hidden = true;
+    }, 6000);
+  }
+
+  function hideToast() {
+    if (!toast) return;
+    toast.hidden = true;
+  }
+
+  function updateCartCounter(totalItems) {
+    const counter = document.getElementById('cart-counter');
+    if (counter) {
+      counter.textContent = String(totalItems);
+    }
+  }
+
+  const navToggle = document.getElementById('nav-toggle');
+  const siteNav = document.getElementById('site-nav');
+
+  if (navToggle && siteNav) {
+    navToggle.addEventListener('click', () => {
+      const isOpen = siteNav.classList.toggle('is-open');
+      navToggle.classList.toggle('is-open', isOpen);
+      navToggle.setAttribute('aria-expanded', String(isOpen));
+    });
+
+    siteNav.querySelectorAll('a').forEach((link) => {
+      link.addEventListener('click', () => {
+        siteNav.classList.remove('is-open');
+        navToggle.classList.remove('is-open');
+        navToggle.setAttribute('aria-expanded', 'false');
+      });
+    });
+  }
+
+  document.querySelectorAll('.details-btn').forEach((button) => {
+    button.addEventListener('click', () => {
+      const targetId = button.getAttribute('aria-controls');
+      const details = targetId
+        ? document.getElementById(targetId)
+        : button.closest('.product-card')?.querySelector('.details-content');
+
+      if (!details) return;
+
+      const isOpen = details.classList.toggle('is-open');
+      button.setAttribute('aria-expanded', String(isOpen));
+      button.textContent = isOpen ? 'Hide Details' : 'View Details';
     });
   });
-}
 
-const detailButtons = document.querySelectorAll('.details-btn');
-detailButtons.forEach(button => {
-    button.addEventListener('click', function() {
-        const card = this.closest('.product-card');
-        const details = card.querySelector('.details-content');
-        details.classList.toggle('is-open');
-        if (details.classList.contains('is-open')) {
-            this.textContent = 'Hide Details';
-        } else {
-            this.textContent = 'View Details';
+  document.querySelectorAll('.add-to-cart-btn').forEach((button) => {
+    button.addEventListener('click', async () => {
+      const productId = button.dataset.id || '';
+      const card = button.closest('.product-card');
+      const quantityInput = card?.querySelector('.qty-input');
+      const feedback = card?.querySelector('.cart-feedback');
+
+      let quantity = parseInt(quantityInput?.value || '1', 10);
+      if (!Number.isFinite(quantity) || quantity < 1) quantity = 1;
+      if (quantity > 99) quantity = 99;
+      if (quantityInput) quantityInput.value = String(quantity);
+
+      const originalText = button.textContent;
+      button.disabled = true;
+      button.textContent = 'Adding...';
+      hideToast();
+
+      if (feedback) {
+        feedback.textContent = '';
+        feedback.classList.remove('is-error');
+      }
+
+      try {
+        const body = new URLSearchParams({
+          action: 'add',
+          id: productId,
+          quantity: String(quantity),
+          csrf_token: csrfToken,
+        });
+
+        const response = await fetch('cart_action.php', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
+          },
+          body,
+        });
+
+        const data = await response.json().catch(() => ({}));
+
+        if (!response.ok || data.status !== 'success') {
+          throw new Error(data.message || 'Could not add this item to your cart.');
         }
-    });
-});
 
-const addToCartButtons = document.querySelectorAll('.add-to-cart-btn');
-addToCartButtons.forEach(button => {
-    button.addEventListener('click', function(e) {
-        e.preventDefault();
-        
-        // Popup asking the user for the quantity (Shopee-style modal feel)
-        let userInput = prompt("How many items do you want to add?", "1");
-        
-        // If they click Cancel, stop right here
-        if (userInput === null) return;
-        
-        // Convert to a number
-        let quantity = parseInt(userInput);
-        
-        // Ensure they entered a valid number greater than 0
-        if (isNaN(quantity) || quantity <= 0) {
-            alert("Please enter a valid quantity.");
-            return;
+        updateCartCounter(data.totalItems);
+
+        const message = `${quantity} x ${data.item?.name || 'item'} added to cart.`;
+        if (feedback) {
+          feedback.textContent = message;
+          feedback.classList.remove('is-error');
         }
-        
-        const formData = new FormData();
-        formData.append('action', 'add');
-        formData.append('id', this.dataset.id);
-        formData.append('name', this.dataset.name);
-        formData.append('price', this.dataset.price);
-        formData.append('image', this.dataset.image);
-        formData.append('quantity', quantity);
+        showToast(message);
+      } catch (error) {
+        const message = error instanceof Error
+          ? error.message
+          : 'Could not add this item to your cart.';
 
-        fetch('cart_action.php', {
-            method: 'POST',
-            body: formData
-        })
-        .then(response => response.json())
-        .then(data => {
-            if(data.status === 'success') {
-                alert(quantity + ' item(s) successfully added to cart!');
-                const counter = document.getElementById('cart-counter');
-                if(counter) counter.innerText = data.totalItems;
-            } else if (data.status === 'unauthorized') {
-                alert('Please log in or register to add items to your cart.');
-                window.location.href = 'login.php'; 
-            }
-        })
-        .catch(error => console.error('Error adding to cart:', error));
+        if (feedback) {
+          feedback.textContent = message;
+          feedback.classList.add('is-error');
+        }
+        showToast(message, true);
+      } finally {
+        button.disabled = false;
+        button.textContent = originalText;
+      }
     });
-});
+  });
+
+  const confirmDialog = document.getElementById('confirm-dialog');
+  const confirmMessage = document.getElementById('confirm-message');
+  const confirmOk = document.getElementById('confirm-ok');
+  const confirmCancel = document.getElementById('confirm-cancel');
+  let pendingForm = null;
+
+  function hideConfirmDialog() {
+    if (confirmDialog) {
+      confirmDialog.hidden = true;
+    }
+    pendingForm = null;
+  }
+
+  document.querySelectorAll('form[data-confirm]').forEach((form) => {
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      pendingForm = form;
+
+      if (confirmMessage) {
+        confirmMessage.textContent = form.dataset.confirm || 'Are you sure?';
+      }
+      if (confirmDialog) {
+        confirmDialog.hidden = false;
+      }
+      if (confirmCancel) {
+        confirmCancel.focus();
+      }
+    });
+  });
+
+  if (confirmOk) {
+    confirmOk.addEventListener('click', () => {
+      if (!pendingForm) return;
+
+      const form = pendingForm;
+      hideConfirmDialog();
+      form.submit();
+    });
+  }
+
+  if (confirmCancel) {
+    confirmCancel.addEventListener('click', hideConfirmDialog);
+  }
+
+  if (confirmDialog) {
+    confirmDialog.addEventListener('click', (event) => {
+      if (event.target === confirmDialog) {
+        hideConfirmDialog();
+      }
+    });
+  }
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && confirmDialog && !confirmDialog.hidden) {
+      hideConfirmDialog();
+    }
+  });
+})();

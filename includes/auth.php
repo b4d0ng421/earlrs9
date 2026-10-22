@@ -53,3 +53,51 @@ function csrfCheck(?string $token): bool
 {
     return isset($_SESSION['csrf_token']) && hash_equals($_SESSION['csrf_token'], (string) $token);
 }
+
+/** Store a one-shot message for the next page load. */
+function setFlash(string $type, string $message): void
+{
+    $_SESSION['flash'] = [
+        'type'    => $type === 'error' ? 'error' : 'success',
+        'message' => $message,
+    ];
+}
+
+/** Read and clear the one-shot flash message. */
+function getFlash(): ?array
+{
+    if (empty($_SESSION['flash']) || !is_array($_SESSION['flash'])) {
+        unset($_SESSION['flash']);
+
+        return null;
+    }
+
+    $flash = $_SESSION['flash'];
+    unset($_SESSION['flash']);
+
+    return $flash;
+}
+
+/** Safely read a trimmed string from POST. */
+function postString(string $key): string
+{
+    $value = $_POST[$key] ?? '';
+
+    return is_string($value) ? trim($value) : '';
+}
+
+/** Safely read an untrimmed string from POST (passwords). */
+function postRawString(string $key): string
+{
+    $value = $_POST[$key] ?? '';
+
+    return is_string($value) ? $value : '';
+}
+
+/** Safely read a trimmed string from the query string. */
+function queryString(string $key): string
+{
+    $value = $_GET[$key] ?? '';
+
+    return is_string($value) ? trim($value) : '';
+}

@@ -1,0 +1,1247 @@
+{
+  "id": "43b8f449-5a21-44f0-a3f7-972cf11eaf90",
+  "version": "2.0",
+  "name": "RS8 Racing",
+  "url": "http://localhost/earlrs9/",
+  "tests": [
+    {
+      "id": "e3942d6a-ccfa-4ce0-8028-cacb177bebcc",
+      "name": "Health check",
+      "commands": [
+        {
+          "id": "ac2071ae-556e-440c-a61b-7478f3eac4c0",
+          "comment": "",
+          "command": "open",
+          "target": "health.php",
+          "targets": [],
+          "value": ""
+        },
+        {
+          "id": "b091949e-7a25-4bc0-8207-69e96c31f384",
+          "comment": "",
+          "command": "waitForElementVisible",
+          "target": "css=body",
+          "targets": [],
+          "value": "10000"
+        },
+        {
+          "id": "911771ba-2c66-4d55-9e19-ab75c79ddb43",
+          "comment": "",
+          "command": "assertText",
+          "target": "css=body",
+          "targets": [],
+          "value": "{\"status\":\"ok\",\"database\":\"rs8_racing\"}"
+        }
+      ]
+    },
+    {
+      "id": "a2961a52-ee56-4ff9-bb35-194c539b9832",
+      "name": "Home, navigation, and product details",
+      "commands": [
+        {
+          "id": "03ea82e9-f65e-4f9e-b523-515595cf53b8",
+          "comment": "",
+          "command": "open",
+          "target": "index.php",
+          "targets": [],
+          "value": ""
+        },
+        {
+          "id": "b080184d-d92f-476c-9bbb-4586e461c59d",
+          "comment": "",
+          "command": "open",
+          "target": "logout.php",
+          "targets": [],
+          "value": ""
+        },
+        {
+          "id": "81931c8a-bfd0-471c-898a-f0009766993a",
+          "comment": "",
+          "command": "open",
+          "target": "index.php",
+          "targets": [],
+          "value": ""
+        },
+        {
+          "id": "2f83416c-fd25-4ba7-a576-c57511bc8a88",
+          "comment": "",
+          "command": "setWindowSize",
+          "target": "1280x900",
+          "targets": [],
+          "value": ""
+        },
+        {
+          "id": "fccfec6a-1737-4910-b054-5f7017691ee2",
+          "comment": "",
+          "command": "waitForElementVisible",
+          "target": "id=add-to-cart-p1",
+          "targets": [],
+          "value": "10000"
+        },
+        {
+          "id": "a64c3a50-4968-4ca1-9793-010b5d2c2501",
+          "comment": "",
+          "command": "assertElementPresent",
+          "target": "id=product-p1",
+          "targets": [],
+          "value": ""
+        },
+        {
+          "id": "c88adad6-f892-400b-bba0-0e942fdbe976",
+          "comment": "",
+          "command": "assertElementPresent",
+          "target": "id=product-p6",
+          "targets": [],
+          "value": ""
+        },
+        {
+          "id": "8c7a2fea-60e3-47de-8877-27ccdc950833",
+          "comment": "",
+          "command": "click",
+          "target": "id=details-p1",
+          "targets": [],
+          "value": ""
+        },
+        {
+          "id": "255bd720-b600-4ab3-95d4-7fce3429d84b",
+          "comment": "",
+          "command": "waitForElementVisible",
+          "target": "id=details-content-p1",
+          "targets": [],
+          "value": "5000"
+        },
+        {
+          "id": "671e8ef8-9a30-4212-976a-7888958739b1",
+          "comment": "",
+          "command": "assertText",
+          "target": "id=details-p1",
+          "targets": [],
+          "value": "HIDE DETAILS"
+        },
+        {
+          "id": "90994c80-b8d3-49e5-b13c-54f480b0fe22",
+          "comment": "",
+          "command": "click",
+          "target": "id=details-p1",
+          "targets": [],
+          "value": ""
+        },
+        {
+          "id": "d50dee31-ab83-4319-a5f3-8376dcca0654",
+          "comment": "",
+          "command": "waitForElementNotVisible",
+          "target": "id=details-content-p1",
+          "targets": [],
+          "value": "5000"
+        },
+        {
+          "id": "bb3a7176-3a1b-4b8b-a73f-20ea9c938704",
+          "comment": "",
+          "command": "assertText",
+          "target": "id=details-p1",
+          "targets": [],
+          "value": "VIEW DETAILS"
+        },
+        {
+          "id": "58a3afe4-81e9-4678-af06-94fb55e14d10",
+          "comment": "",
+          "command": "click",
+          "target": "id=nav-about",
+          "targets": [],
+          "value": ""
+        },
+        {
+          "id": "3c61134f-f524-4374-97b5-151541cfd607",
+          "comment": "",
+          "command": "waitForElementVisible",
+          "target": "css=h1",
+          "targets": [],
+          "value": "10000"
+        },
+        {
+          "id": "d44482b3-23f5-4686-9c06-567e05943326",
+          "comment": "",
+          "command": "assertText",
+          "target": "css=h1",
+          "targets": [],
+          "value": "PARTS WE'D RUN OURSELVES."
+        },
+        {
+          "id": "4e0851a3-8db3-41ce-bb1f-25c7e2ac3a00",
+          "comment": "",
+          "command": "click",
+          "target": "id=nav-contact",
+          "targets": [],
+          "value": ""
+        },
+        {
+          "id": "fed83862-c509-4127-933a-3e2f83f08c56",
+          "comment": "",
+          "command": "waitForElementVisible",
+          "target": "id=contact-form",
+          "targets": [],
+          "value": "10000"
+        },
+        {
+          "id": "54c605fb-1f8e-406e-9a34-0cc17d2f6282",
+          "comment": "",
+          "command": "assertText",
+          "target": "css=h1",
+          "targets": [],
+          "value": "TALK TO THE SHOP."
+        },
+        {
+          "id": "8014c8ed-c0ae-4be8-a6e8-636d63d625fa",
+          "comment": "",
+          "command": "click",
+          "target": "id=nav-cart",
+          "targets": [],
+          "value": ""
+        },
+        {
+          "id": "33b04f45-e517-4c03-a0c2-8ff6f623fb09",
+          "comment": "",
+          "command": "waitForElementVisible",
+          "target": "id=cart-empty-title",
+          "targets": [],
+          "value": "10000"
+        },
+        {
+          "id": "4b1db12f-8245-4099-ae2d-896eb9d12aeb",
+          "comment": "",
+          "command": "assertText",
+          "target": "id=cart-empty-title",
+          "targets": [],
+          "value": "YOUR CART IS EMPTY"
+        }
+      ]
+    },
+    {
+      "id": "169630ca-2466-4baa-a2a6-cc4beabc7dcc",
+      "name": "Guest cart add and remove",
+      "commands": [
+        {
+          "id": "dd1b807d-2a28-42c0-ab88-b9073b59d548",
+          "comment": "",
+          "command": "open",
+          "target": "index.php",
+          "targets": [],
+          "value": ""
+        },
+        {
+          "id": "07808a0e-23aa-4362-9982-1b58a9c2040d",
+          "comment": "",
+          "command": "open",
+          "target": "logout.php",
+          "targets": [],
+          "value": ""
+        },
+        {
+          "id": "6ebda78f-d48a-44ca-b7b1-7a5669bff044",
+          "comment": "",
+          "command": "open",
+          "target": "index.php",
+          "targets": [],
+          "value": ""
+        },
+        {
+          "id": "335eb982-4251-43dc-8135-34d9dd070125",
+          "comment": "",
+          "command": "setWindowSize",
+          "target": "1280x900",
+          "targets": [],
+          "value": ""
+        },
+        {
+          "id": "5eb2a13c-cb67-43aa-8b6a-3cefdcaf04b4",
+          "comment": "",
+          "command": "waitForElementVisible",
+          "target": "id=qty-p2",
+          "targets": [],
+          "value": "10000"
+        },
+        {
+          "id": "15a4d099-a93a-4f53-852f-12628be8e619",
+          "comment": "",
+          "command": "type",
+          "target": "id=qty-p2",
+          "targets": [],
+          "value": "2"
+        },
+        {
+          "id": "c8917aa7-0b18-49dc-91f6-fe6504c761e9",
+          "comment": "",
+          "command": "click",
+          "target": "id=add-to-cart-p2",
+          "targets": [],
+          "value": ""
+        },
+        {
+          "id": "e74e21f6-8d2c-4b33-acda-f30f0cc97b03",
+          "comment": "",
+          "command": "waitForElementVisible",
+          "target": "id=site-toast",
+          "targets": [],
+          "value": "10000"
+        },
+        {
+          "id": "dc2c9436-be21-40ac-8031-798d9058746e",
+          "comment": "",
+          "command": "assertText",
+          "target": "id=cart-feedback-p2",
+          "targets": [],
+          "value": "2 x RS8 Torque Drive Half Sheeve added to cart."
+        },
+        {
+          "id": "62852be7-51d9-4c71-8290-bf1098767a71",
+          "comment": "",
+          "command": "assertText",
+          "target": "id=cart-counter",
+          "targets": [],
+          "value": "2"
+        },
+        {
+          "id": "e4892f10-8507-4eda-8b2d-4b390f283658",
+          "comment": "",
+          "command": "click",
+          "target": "id=nav-cart",
+          "targets": [],
+          "value": ""
+        },
+        {
+          "id": "ec05dbed-0d23-45de-bd55-7d39b77b519d",
+          "comment": "",
+          "command": "waitForElementVisible",
+          "target": "id=cart-row-p2",
+          "targets": [],
+          "value": "10000"
+        },
+        {
+          "id": "a8cf0967-cb2a-4642-919f-9ef2847950d6",
+          "comment": "",
+          "command": "assertText",
+          "target": "id=cart-qty-p2",
+          "targets": [],
+          "value": "2"
+        },
+        {
+          "id": "8b84cb69-64e3-48eb-a196-f4037ded7327",
+          "comment": "",
+          "command": "assertText",
+          "target": "id=cart-subtotal-p2",
+          "targets": [],
+          "value": "₱3,360.00"
+        },
+        {
+          "id": "0812bc3a-cfb6-4a06-b1cb-59fe606fcf03",
+          "comment": "",
+          "command": "assertElementPresent",
+          "target": "id=cart-guest-note",
+          "targets": [],
+          "value": ""
+        },
+        {
+          "id": "65db0ada-b591-4878-8728-f299b41ed832",
+          "comment": "",
+          "command": "click",
+          "target": "id=remove-p2",
+          "targets": [],
+          "value": ""
+        },
+        {
+          "id": "83a80232-097c-408c-a4cc-2651ddadfe43",
+          "comment": "",
+          "command": "waitForElementVisible",
+          "target": "id=flash-message",
+          "targets": [],
+          "value": "10000"
+        },
+        {
+          "id": "ef356b3a-80b8-402b-95df-566c28ddcf01",
+          "comment": "",
+          "command": "assertText",
+          "target": "id=flash-message",
+          "targets": [],
+          "value": "Item removed from cart."
+        },
+        {
+          "id": "2ce7899a-0117-41d1-8f02-d333a25b82b2",
+          "comment": "",
+          "command": "waitForElementVisible",
+          "target": "id=cart-empty-title",
+          "targets": [],
+          "value": "10000"
+        },
+        {
+          "id": "efbef7ec-4165-470e-8d10-66f73bb9ec77",
+          "comment": "",
+          "command": "assertText",
+          "target": "id=cart-empty-title",
+          "targets": [],
+          "value": "YOUR CART IS EMPTY"
+        }
+      ]
+    },
+    {
+      "id": "53bdf56c-4f07-4fc5-8412-a362115e67a3",
+      "name": "Contact form",
+      "commands": [
+        {
+          "id": "184f0322-7b80-4a1f-8099-0664c99bc496",
+          "comment": "",
+          "command": "open",
+          "target": "contact.php",
+          "targets": [],
+          "value": ""
+        },
+        {
+          "id": "f9347b40-2a8b-4c2b-ae56-339a1764bc25",
+          "comment": "",
+          "command": "open",
+          "target": "logout.php",
+          "targets": [],
+          "value": ""
+        },
+        {
+          "id": "cfac6e4b-6841-4e70-9228-f2c8ffb4dd36",
+          "comment": "",
+          "command": "open",
+          "target": "contact.php",
+          "targets": [],
+          "value": ""
+        },
+        {
+          "id": "0ea073ad-cae0-41c0-ac0b-4a0cedf7f98e",
+          "comment": "",
+          "command": "setWindowSize",
+          "target": "1280x900",
+          "targets": [],
+          "value": ""
+        },
+        {
+          "id": "9a2e704d-e65f-485b-9c59-2d8ad4c12ff3",
+          "comment": "",
+          "command": "waitForElementVisible",
+          "target": "id=contact-form",
+          "targets": [],
+          "value": "10000"
+        },
+        {
+          "id": "de05f520-354b-46d3-a32d-1adcc9722042",
+          "comment": "",
+          "command": "executeScript",
+          "target": "return 'sel_contact_' + Date.now() + '@example.com';",
+          "targets": [],
+          "value": "contactEmail"
+        },
+        {
+          "id": "576f7bfb-fe33-46a1-92df-b15dbc23d903",
+          "comment": "",
+          "command": "type",
+          "target": "id=name",
+          "targets": [],
+          "value": "QA Tester"
+        },
+        {
+          "id": "db3ebd4c-6d0a-4d07-9ccb-2bfa0351995b",
+          "comment": "",
+          "command": "type",
+          "target": "id=email",
+          "targets": [],
+          "value": "${contactEmail}"
+        },
+        {
+          "id": "8c7ed516-b55a-425c-82a0-22bc5c365c85",
+          "comment": "",
+          "command": "type",
+          "target": "id=message",
+          "targets": [],
+          "value": "Selenium IDE contact test message."
+        },
+        {
+          "id": "cf15a7aa-f809-41d8-b099-2450f23f8b6a",
+          "comment": "",
+          "command": "click",
+          "target": "id=contact-submit",
+          "targets": [],
+          "value": ""
+        },
+        {
+          "id": "8e53c4fa-f052-494e-834e-3806b6bd4d03",
+          "comment": "",
+          "command": "waitForElementVisible",
+          "target": "id=flash-message",
+          "targets": [],
+          "value": "10000"
+        },
+        {
+          "id": "06466b35-24fe-476d-9c17-a73177a31dfa",
+          "comment": "",
+          "command": "assertText",
+          "target": "id=flash-message",
+          "targets": [],
+          "value": "Thanks! Your message has been sent. We will get back to you shortly."
+        }
+      ]
+    },
+    {
+      "id": "b961c240-1bc5-40a1-84eb-d098b880fd1f",
+      "name": "Register, login, and logout",
+      "commands": [
+        {
+          "id": "9de767cc-8be8-4149-9cbe-fbdae62bab67",
+          "comment": "",
+          "command": "open",
+          "target": "register.php",
+          "targets": [],
+          "value": ""
+        },
+        {
+          "id": "d6c24f42-91bf-44dc-a900-1380bfc4a987",
+          "comment": "",
+          "command": "open",
+          "target": "logout.php",
+          "targets": [],
+          "value": ""
+        },
+        {
+          "id": "526f75c0-b9df-40c7-8445-7883fded3607",
+          "comment": "",
+          "command": "open",
+          "target": "register.php",
+          "targets": [],
+          "value": ""
+        },
+        {
+          "id": "af6e9db4-201a-41ae-8b71-58dbd1411a56",
+          "comment": "",
+          "command": "setWindowSize",
+          "target": "1280x900",
+          "targets": [],
+          "value": ""
+        },
+        {
+          "id": "fd86ec9f-e864-49f0-84df-259b4c79106d",
+          "comment": "",
+          "command": "executeScript",
+          "target": "return 'sel_qa_' + Date.now();",
+          "targets": [],
+          "value": "qaUser"
+        },
+        {
+          "id": "4a979e05-5644-4007-acdc-24cc0aa1af43",
+          "comment": "",
+          "command": "type",
+          "target": "id=username",
+          "targets": [],
+          "value": "${qaUser}"
+        },
+        {
+          "id": "a82b54d1-ff4a-4d19-b638-3e86249e437e",
+          "comment": "",
+          "command": "type",
+          "target": "id=email",
+          "targets": [],
+          "value": "${qaUser}@example.com"
+        },
+        {
+          "id": "6d96169e-bfba-4cbf-9737-3a5988f20192",
+          "comment": "",
+          "command": "type",
+          "target": "id=password",
+          "targets": [],
+          "value": "QaPass123!"
+        },
+        {
+          "id": "f83b016f-2dab-418c-ad76-90eb8d7ed55a",
+          "comment": "",
+          "command": "type",
+          "target": "id=confirm_password",
+          "targets": [],
+          "value": "QaPass123!"
+        },
+        {
+          "id": "0c537cb4-ce4b-4887-9519-193cfece62d1",
+          "comment": "",
+          "command": "click",
+          "target": "id=register-submit",
+          "targets": [],
+          "value": ""
+        },
+        {
+          "id": "98eaa79c-1691-45e0-94ba-254c5cec46dd",
+          "comment": "",
+          "command": "waitForElementVisible",
+          "target": "id=flash-message",
+          "targets": [],
+          "value": "10000"
+        },
+        {
+          "id": "5a8cf74c-4926-4416-a9be-0ddbd781bbda",
+          "comment": "",
+          "command": "assertText",
+          "target": "id=flash-message",
+          "targets": [],
+          "value": "Account created. You can now log in."
+        },
+        {
+          "id": "a4aebf88-e6cb-484a-a7ba-80c83fd65523",
+          "comment": "",
+          "command": "waitForElementVisible",
+          "target": "id=login-form",
+          "targets": [],
+          "value": "10000"
+        },
+        {
+          "id": "182db942-c06a-4eca-bac2-24935f072db0",
+          "comment": "",
+          "command": "type",
+          "target": "id=username",
+          "targets": [],
+          "value": "${qaUser}"
+        },
+        {
+          "id": "52a1943c-1d18-4dad-98f6-e463b45b25f0",
+          "comment": "",
+          "command": "type",
+          "target": "id=password",
+          "targets": [],
+          "value": "QaPass123!"
+        },
+        {
+          "id": "44c7c28d-6183-4379-8f49-4765ec81b5f6",
+          "comment": "",
+          "command": "click",
+          "target": "id=login-submit",
+          "targets": [],
+          "value": ""
+        },
+        {
+          "id": "6b46a00c-8f96-4753-bd84-d05308eb9dc4",
+          "comment": "",
+          "command": "waitForElementVisible",
+          "target": "id=nav-dashboard",
+          "targets": [],
+          "value": "10000"
+        },
+        {
+          "id": "07676f4e-b96e-4bed-8da2-b2abb05a3251",
+          "comment": "",
+          "command": "assertText",
+          "target": "id=flash-message",
+          "targets": [],
+          "value": "Welcome back, ${qaUser}."
+        },
+        {
+          "id": "eb707061-b5eb-49ca-af75-bac23c0f6e37",
+          "comment": "",
+          "command": "assertElementPresent",
+          "target": "id=nav-dashboard",
+          "targets": [],
+          "value": ""
+        },
+        {
+          "id": "9daadce1-e41f-4955-91d1-dec84bcd5bfb",
+          "comment": "",
+          "command": "click",
+          "target": "id=nav-logout",
+          "targets": [],
+          "value": ""
+        },
+        {
+          "id": "6a9f395f-a660-4610-95f6-9f415906935d",
+          "comment": "",
+          "command": "waitForElementVisible",
+          "target": "id=logout-message",
+          "targets": [],
+          "value": "10000"
+        },
+        {
+          "id": "31ee6683-2437-4a44-8c20-591c027891a0",
+          "comment": "",
+          "command": "assertText",
+          "target": "id=logout-message",
+          "targets": [],
+          "value": "You have been logged out."
+        },
+        {
+          "id": "93f14477-b11e-4bfd-ad45-f756d1d5cf5c",
+          "comment": "",
+          "command": "assertElementPresent",
+          "target": "id=nav-login",
+          "targets": [],
+          "value": ""
+        }
+      ]
+    },
+    {
+      "id": "7cce29ea-bdf2-49eb-8d9a-b8fd01642a4e",
+      "name": "Invalid login",
+      "commands": [
+        {
+          "id": "fa9912d8-96e2-49ee-812f-843fff4e740f",
+          "comment": "",
+          "command": "open",
+          "target": "login.php",
+          "targets": [],
+          "value": ""
+        },
+        {
+          "id": "0e6cf647-2e85-4f1b-8e5a-3f601f90880e",
+          "comment": "",
+          "command": "open",
+          "target": "logout.php",
+          "targets": [],
+          "value": ""
+        },
+        {
+          "id": "96281111-2f49-4a5c-b2d8-050cc5722dd3",
+          "comment": "",
+          "command": "open",
+          "target": "login.php",
+          "targets": [],
+          "value": ""
+        },
+        {
+          "id": "b975d203-2e9b-4cf8-890d-4c80577a8102",
+          "comment": "",
+          "command": "setWindowSize",
+          "target": "1280x900",
+          "targets": [],
+          "value": ""
+        },
+        {
+          "id": "0bb989ae-fc11-4567-8de6-2a8ade7fb111",
+          "comment": "",
+          "command": "type",
+          "target": "id=username",
+          "targets": [],
+          "value": "earl"
+        },
+        {
+          "id": "728866dd-b65d-4b57-831f-15302668e3ec",
+          "comment": "",
+          "command": "type",
+          "target": "id=password",
+          "targets": [],
+          "value": "wrong-password"
+        },
+        {
+          "id": "c18c8a36-31ad-4925-991c-274b00a88fb1",
+          "comment": "",
+          "command": "click",
+          "target": "id=login-submit",
+          "targets": [],
+          "value": ""
+        },
+        {
+          "id": "d116c0df-5829-4fd6-9644-0159a69a0e96",
+          "comment": "",
+          "command": "waitForElementVisible",
+          "target": "id=login-error",
+          "targets": [],
+          "value": "10000"
+        },
+        {
+          "id": "e19ef6f5-09dd-4f68-b388-d8724e32d26f",
+          "comment": "",
+          "command": "assertText",
+          "target": "id=login-error",
+          "targets": [],
+          "value": "Invalid username or password."
+        },
+        {
+          "id": "87cb4a09-2fb1-48ca-8f3d-072f3a0f1e7c",
+          "comment": "",
+          "command": "assertElementPresent",
+          "target": "id=login-form",
+          "targets": [],
+          "value": ""
+        }
+      ]
+    },
+    {
+      "id": "b9cea3c6-6710-44ff-87c2-f76fdec409a1",
+      "name": "Checkout creates an order",
+      "commands": [
+        {
+          "id": "96a29940-a237-49b0-971b-c8b57f033621",
+          "comment": "",
+          "command": "open",
+          "target": "register.php",
+          "targets": [],
+          "value": ""
+        },
+        {
+          "id": "cb7b0f99-5027-4a0b-82cf-4df4670b6503",
+          "comment": "",
+          "command": "open",
+          "target": "logout.php",
+          "targets": [],
+          "value": ""
+        },
+        {
+          "id": "ec9e09ef-1c23-4483-84f3-5eee887cd84f",
+          "comment": "",
+          "command": "open",
+          "target": "register.php",
+          "targets": [],
+          "value": ""
+        },
+        {
+          "id": "ab4c7fb5-77cf-43fb-8e32-68129b974332",
+          "comment": "",
+          "command": "setWindowSize",
+          "target": "1280x900",
+          "targets": [],
+          "value": ""
+        },
+        {
+          "id": "6ffb3103-50df-43e7-a641-ad95c5b92e91",
+          "comment": "",
+          "command": "executeScript",
+          "target": "return 'sel_buyer_' + Date.now();",
+          "targets": [],
+          "value": "buyerUser"
+        },
+        {
+          "id": "254f51fe-6866-4292-a403-c754ddd17192",
+          "comment": "",
+          "command": "type",
+          "target": "id=username",
+          "targets": [],
+          "value": "${buyerUser}"
+        },
+        {
+          "id": "a10851d8-8e17-4c26-ac62-545ed427ab3d",
+          "comment": "",
+          "command": "type",
+          "target": "id=email",
+          "targets": [],
+          "value": "${buyerUser}@example.com"
+        },
+        {
+          "id": "cd7d443a-3794-4d7e-aec4-8d2c497d7c19",
+          "comment": "",
+          "command": "type",
+          "target": "id=password",
+          "targets": [],
+          "value": "QaPass123!"
+        },
+        {
+          "id": "778f602b-e08b-4c53-9a9d-73e558306fa8",
+          "comment": "",
+          "command": "type",
+          "target": "id=confirm_password",
+          "targets": [],
+          "value": "QaPass123!"
+        },
+        {
+          "id": "a1b52fe4-79b8-48d0-bc84-fc14f4214a47",
+          "comment": "",
+          "command": "click",
+          "target": "id=register-submit",
+          "targets": [],
+          "value": ""
+        },
+        {
+          "id": "6030ee6c-afa7-4ce3-9282-183f3893e90a",
+          "comment": "",
+          "command": "waitForElementVisible",
+          "target": "id=flash-message",
+          "targets": [],
+          "value": "10000"
+        },
+        {
+          "id": "6c276abc-c8a1-46c8-8809-50d7c9ca90ce",
+          "comment": "",
+          "command": "assertText",
+          "target": "id=flash-message",
+          "targets": [],
+          "value": "Account created. You can now log in."
+        },
+        {
+          "id": "66d6e9a5-be5f-4aa1-8403-657f5a7310ff",
+          "comment": "",
+          "command": "waitForElementVisible",
+          "target": "id=login-form",
+          "targets": [],
+          "value": "10000"
+        },
+        {
+          "id": "e552648c-9c32-4edb-a4a0-4f9b0337d0d6",
+          "comment": "",
+          "command": "type",
+          "target": "id=username",
+          "targets": [],
+          "value": "${buyerUser}"
+        },
+        {
+          "id": "06ded652-483f-4981-a4f5-c6d9a80e2789",
+          "comment": "",
+          "command": "type",
+          "target": "id=password",
+          "targets": [],
+          "value": "QaPass123!"
+        },
+        {
+          "id": "1f35b4d7-16a8-4c54-9ee8-d6341144c187",
+          "comment": "",
+          "command": "click",
+          "target": "id=login-submit",
+          "targets": [],
+          "value": ""
+        },
+        {
+          "id": "a81823bd-fa86-4cdf-a227-5f4baff6f762",
+          "comment": "",
+          "command": "waitForElementVisible",
+          "target": "id=nav-dashboard",
+          "targets": [],
+          "value": "10000"
+        },
+        {
+          "id": "ae8990a0-743b-4ef6-b094-9aa95fb9f829",
+          "comment": "",
+          "command": "click",
+          "target": "id=nav-home",
+          "targets": [],
+          "value": ""
+        },
+        {
+          "id": "0a4ba1e5-c706-4259-8a0b-65d46b749b6a",
+          "comment": "",
+          "command": "waitForElementVisible",
+          "target": "id=qty-p1",
+          "targets": [],
+          "value": "10000"
+        },
+        {
+          "id": "5efa753b-a966-434b-b84c-1aa5a2cf94b5",
+          "comment": "",
+          "command": "type",
+          "target": "id=qty-p1",
+          "targets": [],
+          "value": "2"
+        },
+        {
+          "id": "b73176f5-1ee5-48b8-8abb-b66c19b1a7fe",
+          "comment": "",
+          "command": "click",
+          "target": "id=add-to-cart-p1",
+          "targets": [],
+          "value": ""
+        },
+        {
+          "id": "5f0496a0-445d-4585-b505-800697e88054",
+          "comment": "",
+          "command": "waitForElementVisible",
+          "target": "id=site-toast",
+          "targets": [],
+          "value": "10000"
+        },
+        {
+          "id": "5f852fbf-79a6-4198-aaf3-e8b8e9052868",
+          "comment": "",
+          "command": "assertText",
+          "target": "id=cart-feedback-p1",
+          "targets": [],
+          "value": "2 x RS8 Racing Line 10W-50 added to cart."
+        },
+        {
+          "id": "f164a0cf-2a7a-45b9-9db2-08748c1aafd0",
+          "comment": "",
+          "command": "assertText",
+          "target": "id=cart-counter",
+          "targets": [],
+          "value": "2"
+        },
+        {
+          "id": "598115a6-59e5-4715-b3f4-fc0f4b6bbf5a",
+          "comment": "",
+          "command": "click",
+          "target": "id=nav-cart",
+          "targets": [],
+          "value": ""
+        },
+        {
+          "id": "2cb1fb17-a904-4250-ab98-6e9e07a13b8c",
+          "comment": "",
+          "command": "waitForElementVisible",
+          "target": "id=cart-row-p1",
+          "targets": [],
+          "value": "10000"
+        },
+        {
+          "id": "4ca73537-bf49-4099-b73a-7a3a110c494f",
+          "comment": "",
+          "command": "click",
+          "target": "id=checkout-link",
+          "targets": [],
+          "value": ""
+        },
+        {
+          "id": "fb6a30c4-528b-4164-bd7b-2154bc50a2a5",
+          "comment": "",
+          "command": "waitForElementVisible",
+          "target": "id=contact_number",
+          "targets": [],
+          "value": "10000"
+        },
+        {
+          "id": "a5c80e9e-f689-423a-a986-661ed85a4466",
+          "comment": "",
+          "command": "assertText",
+          "target": "css=h1",
+          "targets": [],
+          "value": "FINALIZE ORDER"
+        },
+        {
+          "id": "b1642ca4-cb14-41fa-a5b2-7ad621f8be35",
+          "comment": "",
+          "command": "type",
+          "target": "id=contact_number",
+          "targets": [],
+          "value": "09123456789"
+        },
+        {
+          "id": "5fe3c099-6e52-4bf5-88eb-785fd96719b4",
+          "comment": "",
+          "command": "type",
+          "target": "id=province",
+          "targets": [],
+          "value": "Metro Manila"
+        },
+        {
+          "id": "715aba72-ca35-49eb-8b98-bec5d5af60f4",
+          "comment": "",
+          "command": "type",
+          "target": "id=city",
+          "targets": [],
+          "value": "Quezon City"
+        },
+        {
+          "id": "2f347c5f-9b3f-4453-acf4-176a1860aa1d",
+          "comment": "",
+          "command": "type",
+          "target": "id=barangay",
+          "targets": [],
+          "value": "San Antonio"
+        },
+        {
+          "id": "b7be9949-285b-4b86-b74b-a8e35e06f8fc",
+          "comment": "",
+          "command": "type",
+          "target": "id=postal",
+          "targets": [],
+          "value": "1105"
+        },
+        {
+          "id": "aab86391-d2b2-414c-b270-f87ccb843b84",
+          "comment": "",
+          "command": "type",
+          "target": "id=street",
+          "targets": [],
+          "value": "123 Test Street"
+        },
+        {
+          "id": "81c8ce9c-408f-4eb4-a8a9-ed279e9d40f4",
+          "comment": "",
+          "command": "click",
+          "target": "id=place-order",
+          "targets": [],
+          "value": ""
+        },
+        {
+          "id": "75e6c485-1392-44aa-993f-b52963f09570",
+          "comment": "",
+          "command": "waitForElementVisible",
+          "target": "id=flash-message",
+          "targets": [],
+          "value": "10000"
+        },
+        {
+          "id": "516839de-641c-4ec3-ae8f-db774db13568",
+          "comment": "",
+          "command": "assertText",
+          "target": "id=flash-message",
+          "targets": [],
+          "value": "Order placed successfully."
+        },
+        {
+          "id": "5f1797fc-d8ac-4cf1-957f-b5210a846b9c",
+          "comment": "",
+          "command": "waitForElementVisible",
+          "target": "css=.order-card",
+          "targets": [],
+          "value": "10000"
+        },
+        {
+          "id": "12aba7d1-b5e9-4984-ba82-e5f7f958bd42",
+          "comment": "",
+          "command": "assertElementPresent",
+          "target": "id=nav-dashboard",
+          "targets": [],
+          "value": ""
+        }
+      ]
+    },
+    {
+      "id": "2e48a728-faa9-405a-8ee1-e9035f058ec1",
+      "name": "Admin updates the newest order",
+      "commands": [
+        {
+          "id": "807ca4bb-4abe-4f5b-a009-23ce465ef7fc",
+          "comment": "",
+          "command": "open",
+          "target": "login.php",
+          "targets": [],
+          "value": ""
+        },
+        {
+          "id": "a2c1b42b-f5ac-4424-964f-1d118527cd81",
+          "comment": "",
+          "command": "open",
+          "target": "logout.php",
+          "targets": [],
+          "value": ""
+        },
+        {
+          "id": "c5301128-d939-42e2-bf14-186520fd402e",
+          "comment": "",
+          "command": "open",
+          "target": "login.php",
+          "targets": [],
+          "value": ""
+        },
+        {
+          "id": "cd7d5ad0-2081-49bd-950a-7a1a09694adb",
+          "comment": "",
+          "command": "setWindowSize",
+          "target": "1280x900",
+          "targets": [],
+          "value": ""
+        },
+        {
+          "id": "1d1ef3a6-af9c-436b-900c-12e30c2e5e10",
+          "comment": "",
+          "command": "type",
+          "target": "id=username",
+          "targets": [],
+          "value": "earl"
+        },
+        {
+          "id": "31f05e28-f00f-4394-8bf0-dcd0c16110e7",
+          "comment": "",
+          "command": "type",
+          "target": "id=password",
+          "targets": [],
+          "value": "earl123"
+        },
+        {
+          "id": "3923a555-f163-4cd9-ac3b-f8c4db3ed2ca",
+          "comment": "",
+          "command": "click",
+          "target": "id=login-submit",
+          "targets": [],
+          "value": ""
+        },
+        {
+          "id": "3e20f18c-65d8-4cf5-bdb8-4cf672893ef3",
+          "comment": "",
+          "command": "waitForElementVisible",
+          "target": "id=admin-orders",
+          "targets": [],
+          "value": "10000"
+        },
+        {
+          "id": "730ce4da-d7b1-431a-9376-b394dd51732a",
+          "comment": "",
+          "command": "assertText",
+          "target": "css=h1",
+          "targets": [],
+          "value": "DASHBOARD"
+        },
+        {
+          "id": "89eb1b0d-cd54-4826-92eb-cb7dab00157c",
+          "comment": "",
+          "command": "assertElementPresent",
+          "target": "id=admin-users",
+          "targets": [],
+          "value": ""
+        },
+        {
+          "id": "68dae09c-abe7-41a5-bb42-053949796fcc",
+          "comment": "",
+          "command": "assertElementPresent",
+          "target": "id=admin-messages",
+          "targets": [],
+          "value": ""
+        },
+        {
+          "id": "3e70fa8e-15cb-408e-812c-2e954d776af7",
+          "comment": "",
+          "command": "select",
+          "target": "css=.order-status-select",
+          "targets": [],
+          "value": "value=shipped"
+        },
+        {
+          "id": "19340200-68c6-4b44-9870-640271cc9aa5",
+          "comment": "",
+          "command": "click",
+          "target": "css=.save-order-btn",
+          "targets": [],
+          "value": ""
+        },
+        {
+          "id": "575eb427-2d7f-46a3-9a2b-95fb416442c8",
+          "comment": "",
+          "command": "waitForElementVisible",
+          "target": "id=flash-message",
+          "targets": [],
+          "value": "10000"
+        },
+        {
+          "id": "aa4f21be-afa7-401b-a771-b41d5cdceddc",
+          "comment": "",
+          "command": "assertText",
+          "target": "id=flash-message",
+          "targets": [],
+          "value": "Order status updated."
+        },
+        {
+          "id": "28c10040-33c5-4fd9-a34b-0ee28b46582e",
+          "comment": "",
+          "command": "waitForElementVisible",
+          "target": "id=admin-orders",
+          "targets": [],
+          "value": "10000"
+        }
+      ]
+    }
+  ],
+  "suites": [
+    {
+      "id": "261ef5d6-4087-4531-be0f-e754784facb4",
+      "name": "RS8 Racing — Full Selenium IDE suite",
+      "persistSession": false,
+      "parallel": false,
+      "timeout": 300000,
+      "tests": [
+        "e3942d6a-ccfa-4ce0-8028-cacb177bebcc",
+        "a2961a52-ee56-4ff9-bb35-194c539b9832",
+        "169630ca-2466-4baa-a2a6-cc4beabc7dcc",
+        "53bdf56c-4f07-4fc5-8412-a362115e67a3",
+        "b961c240-1bc5-40a1-84eb-d098b880fd1f",
+        "7cce29ea-bdf2-49eb-8d9a-b8fd01642a4e",
+        "b9cea3c6-6710-44ff-87c2-f76fdec409a1",
+        "2e48a728-faa9-405a-8ee1-e9035f058ec1"
+      ]
+    }
+  ],
+  "urls": [
+    "http://localhost/earlrs9//"
+  ],
+  "plugins": []
+}

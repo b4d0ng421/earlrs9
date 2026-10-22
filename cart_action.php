@@ -1,51 +1,105 @@
 <?php
-session_start();
 require_once __DIR__ . '/includes/auth.php';
+require_once __DIR__ . '/includes/products.php';
 
-if (!isset($_SESSION['cart'])) {
+function cartRespond(array $payload, int $status = 200): void
+{
+    http_response_code($status);
+    header('Content-Type: application/json; charset=utf-8');
+    echo json_encode($payload);
+    exit;
+}
+
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    cartRespond(['status' => 'error', 'message' => 'Invalid request method.'], 405);
+}
+
+$action = postString('action');
+$token  = postString('csrf_token');
+
+if (!csrfCheck($token)) {
+    if ($action === 'remove') {
+        setFlash('error', 'Your session expired. Please try again.');
+        header('Location: cart.php');
+        exit;
+    }
+
+    cartRespond([
+        'status'  => 'error',
+        'message' => 'Your session expired. Please refresh the page.',
+    ], 419);
+}
+
+if (!isset($_SESSION['cart']) || !is_array($_SESSION['cart'])) {
     $_SESSION['cart'] = [];
 }
 
-header('Content-Type: application/json');
+if ($action === 'add') {
+    $id      = postString('id');
+    $product = rs8_product($id);
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $action = $_POST['action'] ?? '';
-    
-    if ($action === 'add') {
-        if (!isLoggedIn()) {
-            echo json_encode(['status' => 'unauthorized']);
-            exit;
-        }
+    if ($product === null) {
+        cartRespond([
+            'status'  => 'error',
+            'message' => 'That product could not be found.',
+        ], 404);
+    }
 
-        $id       = $_POST['id'] ?? '';
-        $name     = $_POST['name'] ?? '';
-        $price    = (float)($_POST['price'] ?? 0);
-        $image    = $_POST['image'] ?? '';
-        
-        // Safely capture the quantity sent from the Javascript popup
-        $quantity = isset($_POST['quantity']) ? max(1, (int)$_POST['quantity']) : 1;
-        
-        if (isset($_SESSION['cart'][$id])) {
-            $_SESSION['cart'][$id]['quantity'] += $quantity;
-        } else {
-            $_SESSION['cart'][$id] = [
-                'name'     => $name, 
-                'price'    => $price, 
-                'image'    => $image, 
-                'quantity' => $quantity
-            ];
+    $quantityRaw = $_POST['quantity'] ?? 1;
+    $quantity    = is_numeric($quantityRaw) ? (int) $quantityRaw : 1;
+    $quantity    = max(1, min(99, $quantity));
+
+    if (isset($_SESSION['cart'][$id]) && is_array($_SESSION['cart'][$id])) {
+        $currentQuantity = (int) ($_SESSION['cart'][$id]['quantity'] ?? 0);
+        $_SESSION['cart'][$id]['quantity'] = min(99, $currentQuantity + $quantity);
+    } else {
+        $_SESSION['cart'][$id] = [
+            'name'     => $product['name'],
+            'price'    => (float) $product['price'],
+            'image'    => $product['image'],
+            'quantity' => $quantity,
+        ];
+    }
+
+    // Catalogue values always win over anything sent by the browser.
+    $_SESSION['cart'][$id]['name']  = $product['name'];
+    $_SESSION['cart'][$id]['price'] = (float) $product['price'];
+    $_SESSION['cart'][$id]['image'] = $product['image'];
+
+    $totalItems = 0;
+    foreach ($_SESSION['cart'] as $item) {
+        if (is_array($item)) {
+            $totalItems += (int) ($item['quantity'] ?? 0);
         }
-        
-        $totalItems = array_sum(array_column($_SESSION['cart'], 'quantity'));
-        echo json_encode(['status' => 'success', 'totalItems' => $totalItems]);
-        exit;
     }
-    
-    if ($action === 'remove') {
-        $id = $_POST['id'] ?? '';
-        if (isset($_SESSION['cart'][$id])) unset($_SESSION['cart'][$id]);
-        header("Location: cart.php");
-        exit;
-    }
+
+    cartRespond([
+        'status'     => 'success',
+        'message'    => 'Item added to cart.',
+        'item'       => [
+            'id'   => $id,
+            'name' => $product['name'],
+        ],
+        'totalItems' => $totalItems,
+        'cartCount'  => count($_SESSION['cart']),
+    ]);
 }
-echo json_encode(['status' => 'error']);
+
+if ($action === 'remove') {
+    $id = postString('id');
+
+    if ($id !== '' && isset($_SESSION['cart'][$id])) {
+        unset($_SESSION['cart'][$id]);
+        setFlash('success', 'Item removed from cart.');
+    } else {
+        setFlash('error', 'That item is no longer in your cart.');
+    }
+
+    header('Location: cart.php');
+    exit;
+}
+
+cartRespond([
+    'status'  => 'error',
+    'message' => 'Unknown cart action.',
+], 400);

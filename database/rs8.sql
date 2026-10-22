@@ -40,7 +40,7 @@ CREATE TABLE IF NOT EXISTS orders (
     total_amount DECIMAL(10,2) NOT NULL,
     shipping_address TEXT NOT NULL,
     contact_number VARCHAR(50) NOT NULL,
-    status ENUM('pending', 'completed', 'cancelled') DEFAULT 'pending',
+    status ENUM('pending', 'processing', 'shipped', 'completed', 'cancelled') NOT NULL DEFAULT 'pending',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 ) ENGINE=InnoDB;

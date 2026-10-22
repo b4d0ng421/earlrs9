@@ -34,7 +34,8 @@
    Reset
    ========================================================= */
 *{ box-sizing: border-box; margin:0; padding:0; }
-html{ scroll-behavior: smooth; }
+/* Keep scrolling instant; smooth scrolling makes automated clicks unreliable. */
+html{ scroll-behavior: auto; }
 body{
   font-family: var(--font-body);
   background-color: var(--bg);
@@ -835,3 +836,164 @@ footer{
 }
 .role-admin{ background: rgba(226,0,26,0.15); color: var(--red-bright); border: 1px solid var(--red); }
 .role-user{ background: rgba(255,255,255,0.06); color: var(--text-muted); border: 1px solid var(--border-hi); }
+
+/* =========================================================
+   Storefront cart controls / feedback
+   ========================================================= */
+.sr-only{
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.product-actions{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.cart-control{
+  display: flex;
+  align-items: stretch;
+  gap: 8px;
+}
+
+.qty-input{
+  width: 76px;
+  flex: 0 0 76px;
+  background: var(--bg-alt);
+  color: var(--text);
+  border: 1px solid var(--border-hi);
+  border-radius: var(--radius);
+  padding: 10px 12px;
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.qty-input:focus{
+  outline: 2px solid var(--red);
+  outline-offset: 1px;
+}
+
+.cart-control .add-to-cart-btn{
+  flex: 1;
+  width: auto;
+}
+
+.cart-feedback{
+  min-height: 1.2em;
+  margin-top: 2px;
+  font-size: 13px;
+  line-height: 1.4;
+  color: #9be8b5;
+}
+
+.cart-feedback.is-error{
+  color: #ffb3b3;
+}
+
+.cart-note{
+  margin-top: 18px;
+  padding: 12px 14px;
+  border: 1px solid var(--border-hi);
+  border-radius: var(--radius);
+  color: var(--text-muted);
+  font-size: 14px;
+}
+
+.flash-message{
+  margin-top: 24px;
+}
+
+/* =========================================================
+   Toast + confirmation modal
+   ========================================================= */
+.toast{
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 1200;
+  max-width: min(360px, calc(100vw - 48px));
+  padding: 14px 18px;
+  border-radius: var(--radius);
+  background: #1f7a3f;
+  color: #ffffff;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+  font-size: 14px;
+  line-height: 1.45;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.toast.is-error{
+  background: #a51d2d;
+}
+
+.toast[hidden]{
+  display: none;
+}
+
+.modal-backdrop{
+  position: fixed;
+  inset: 0;
+  z-index: 1300;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(0, 0, 0, 0.68);
+}
+
+.modal-backdrop[hidden]{
+  display: none;
+}
+
+.modal{
+  width: 100%;
+  max-width: 440px;
+  padding: 26px;
+  background: var(--surface);
+  border: 1px solid var(--border-hi);
+  border-radius: var(--radius);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+.modal h3{
+  margin-bottom: 10px;
+}
+
+.modal p{
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+.modal-actions{
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 22px;
+}
+
+@media (max-width: 480px){
+  .cart-control{
+    flex-wrap: wrap;
+  }
+  .cart-control .qty-input{
+    flex: 0 0 100%;
+    width: 100%;
+  }
+  .modal-actions{
+    flex-direction: column-reverse;
+  }
+  .modal-actions .btn{
+    width: 100%;
+    justify-content: center;
+  }
+}

@@ -3,15 +3,17 @@ require_once __DIR__ . '/config/db.php';
 require_once __DIR__ . '/includes/auth.php';
 
 $error   = '';
-$success = false;
+$name    = '';
+$email   = '';
+$message = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (!csrfCheck($_POST['csrf_token'] ?? null)) {
+    if (!csrfCheck(postString('csrf_token'))) {
         $error = 'Your session expired. Please refresh and try again.';
     } else {
-        $name    = trim($_POST['name'] ?? '');
-        $email   = trim($_POST['email'] ?? '');
-        $message = trim($_POST['message'] ?? '');
+        $name    = postString('name');
+        $email   = postString('email');
+        $message = postString('message');
 
         if ($name === '' || $email === '' || $message === '') {
             $error = 'Please fill in every field.';
@@ -20,7 +22,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } else {
             $stmt = $pdo->prepare('INSERT INTO contact_messages (name, email, message) VALUES (?, ?, ?)');
             $stmt->execute([$name, $email, $message]);
-            $success = true;
+
+            setFlash('success', 'Thanks! Your message has been sent. We will get back to you shortly.');
+            header('Location: contact.php');
+            exit;
         }
     }
 }
@@ -79,31 +84,28 @@ include __DIR__ . '/includes/header.php';
 
                 <div class="form-card">
                     <h3>Send a Message</h3>
+                    <p>Fill this out and it'll go straight to the shop.</p>
 
-                    <?php if ($success): ?>
-                        <p class="form-message form-success">Thanks — your message has been sent. We'll get back to you shortly.</p>
-                    <?php else: ?>
-                        <p>Fill this out and it'll go straight to the shop.</p>
-                        <?php if ($error): ?>
-                            <p class="form-message form-error"><?= htmlspecialchars($error) ?></p>
-                        <?php endif; ?>
-                        <form method="post" novalidate>
-                            <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(csrfToken()) ?>">
-                            <div class="field">
-                                <label for="name">Name</label>
-                                <input type="text" id="name" name="name" placeholder="Your name" required>
-                            </div>
-                            <div class="field">
-                                <label for="email">Email</label>
-                                <input type="email" id="email" name="email" placeholder="you@email.com" required>
-                            </div>
-                            <div class="field">
-                                <label for="message">Message</label>
-                                <textarea id="message" name="message" placeholder="Tell us what part or bike you're working with..." required></textarea>
-                            </div>
-                            <button type="submit" class="btn">Send Message</button>
-                        </form>
+                    <?php if ($error): ?>
+                        <p class="form-message form-error" id="contact-error" role="alert"><?= htmlspecialchars($error) ?></p>
                     <?php endif; ?>
+
+                    <form method="post" id="contact-form" novalidate>
+                        <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(csrfToken()) ?>">
+                        <div class="field">
+                            <label for="name">Name</label>
+                            <input type="text" id="name" name="name" value="<?= htmlspecialchars($name) ?>" placeholder="Your name" required>
+                        </div>
+                        <div class="field">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" value="<?= htmlspecialchars($email) ?>" placeholder="you@email.com" required>
+                        </div>
+                        <div class="field">
+                            <label for="message">Message</label>
+                            <textarea id="message" name="message" placeholder="Tell us what part or bike you're working with..." required><?= htmlspecialchars($message) ?></textarea>
+                        </div>
+                        <button type="submit" class="btn" id="contact-submit">Send Message</button>
+                    </form>
                 </div>
 
             </div>

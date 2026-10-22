@@ -7,17 +7,18 @@ if (isLoggedIn()) {
     exit;
 }
 
-$error   = '';
-$success = false;
+$error    = '';
+$username = '';
+$email    = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (!csrfCheck($_POST['csrf_token'] ?? null)) {
+    if (!csrfCheck(postString('csrf_token'))) {
         $error = 'Your session expired. Please try again.';
     } else {
-        $username = trim($_POST['username'] ?? '');
-        $email    = trim($_POST['email'] ?? '');
-        $password = $_POST['password'] ?? '';
-        $confirm  = $_POST['confirm_password'] ?? '';
+        $username = postString('username');
+        $email    = postString('email');
+        $password = postRawString('password');
+        $confirm  = postRawString('confirm_password');
 
         if ($username === '' || $email === '' || $password === '') {
             $error = 'Please fill in every field.';
@@ -35,9 +36,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $error = 'That username or email is already registered.';
             } else {
                 $hash = password_hash($password, PASSWORD_DEFAULT);
-                $stmt = $pdo->prepare('INSERT INTO users (username, email, password_hash, role) VALUES (?, ?, ?, "user")');
+                $stmt = $pdo->prepare("INSERT INTO users (username, email, password_hash, role) VALUES (?, ?, ?, 'user')");
                 $stmt->execute([$username, $email, $hash]);
-                $success = true;
+
+                setFlash('success', 'Account created. You can now log in.');
+                header('Location: login.php');
+                exit;
             }
         }
     }
@@ -57,41 +61,37 @@ include __DIR__ . '/includes/header.php';
 <section>
     <div class="container">
         <div class="auth-card">
-            <?php if ($success): ?>
-                <p class="form-message form-success">Account created — you can now <a href="login.php">log in</a>.</p>
-            <?php else: ?>
-                <?php if ($error): ?>
-                    <p class="form-message form-error"><?= htmlspecialchars($error) ?></p>
-                <?php endif; ?>
-
-                <form method="post" novalidate>
-                    <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(csrfToken()) ?>">
-
-                    <div class="field">
-                        <label for="username">Username</label>
-                        <input type="text" id="username" name="username" autocomplete="username" required>
-                    </div>
-
-                    <div class="field">
-                        <label for="email">Email</label>
-                        <input type="email" id="email" name="email" autocomplete="email" required>
-                    </div>
-
-                    <div class="field">
-                        <label for="password">Password</label>
-                        <input type="password" id="password" name="password" autocomplete="new-password" minlength="6" required>
-                    </div>
-
-                    <div class="field">
-                        <label for="confirm_password">Confirm Password</label>
-                        <input type="password" id="confirm_password" name="confirm_password" autocomplete="new-password" minlength="6" required>
-                    </div>
-
-                    <button type="submit" class="btn">Create Account</button>
-                </form>
-
-                <p class="auth-alt">Already have an account? <a href="login.php">Log in</a></p>
+            <?php if ($error): ?>
+                <p class="form-message form-error" id="register-error" role="alert"><?= htmlspecialchars($error) ?></p>
             <?php endif; ?>
+
+            <form method="post" id="register-form" novalidate>
+                <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(csrfToken()) ?>">
+
+                <div class="field">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" value="<?= htmlspecialchars($username) ?>" autocomplete="username" required>
+                </div>
+
+                <div class="field">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" value="<?= htmlspecialchars($email) ?>" autocomplete="email" required>
+                </div>
+
+                <div class="field">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" autocomplete="new-password" minlength="6" required>
+                </div>
+
+                <div class="field">
+                    <label for="confirm_password">Confirm Password</label>
+                    <input type="password" id="confirm_password" name="confirm_password" autocomplete="new-password" minlength="6" required>
+                </div>
+
+                <button type="submit" class="btn" id="register-submit">Create Account</button>
+            </form>
+
+            <p class="auth-alt">Already have an account? <a href="login.php" id="login-link">Log in</a></p>
         </div>
     </div>
 </section>

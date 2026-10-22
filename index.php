@@ -1,12 +1,14 @@
 <?php
+require_once __DIR__ . '/includes/products.php';
+
 $pageTitle  = 'Home';
 $activePage = 'home';
 include __DIR__ . '/includes/header.php';
 ?>
 
     <section class="hero hero-video">
-        <video class="hero-video-bg" autoplay muted loop playsinline poster="images/hero-poster.jpg">
-            <source src="https://rs8.com.ph/wp-content/uploads/2023/06/RS8-Taiwan-Speed-Factory-Redspeed-Motoworkz-Channel-Trailer.mp4" type="video/mp4">
+        <video class="hero-video-bg" autoplay muted loop playsinline preload="metadata">
+            <source src="<?= $assetPath ?>images/rs8-hero.mp4" type="video/mp4">
         </video>
         <div class="hero-overlay"></div>
         <div class="hero-inner">
@@ -27,107 +29,36 @@ include __DIR__ . '/includes/header.php';
             </div>
 
             <div class="product-grid">
-                <!-- Product 1 -->
-                <div class="product-card">
-                    <div class="img-wrap"><img src="images/rs8oil.webp" alt="RS8 Racing Line 10W-50"></div>
-                    <h3>RS8 Racing Line 10W-50</h3>
-                    <div class="product-price">₱350.00</div>
-                    <p class="product-desc">100% Synthetic PAO Formulated Racing Oil</p>
-                    <div class="details-content">
-                        <ul class="product-features">
-                            <li>100% Synthetic</li><li>10W-50 API SN</li><li>4T Racing</li><li>JASO MA</li><li>Racing Line</li><li>PAO Formulated</li>
-                        </ul>
-                    </div>
-                    <div style="display: flex; gap: 10px; margin-top: 15px;">
-                        <button class="details-btn btn" style="flex: 1; background: #333;">View Details</button>
-                        <button class="add-to-cart-btn btn" style="flex: 1;" data-id="p1" data-name="RS8 Racing Line 10W-50" data-price="350.00" data-image="images/rs8oil.webp">Add to Cart</button>
-                    </div>
-                </div>
+                <?php foreach (rs8_products() as $product): ?>
+                    <div class="product-card" id="product-<?= htmlspecialchars($product['id']) ?>" data-testid="product-<?= htmlspecialchars($product['id']) ?>">
+                        <div class="img-wrap">
+                            <img src="<?= htmlspecialchars($product['image']) ?>" alt="<?= htmlspecialchars($product['alt']) ?>">
+                        </div>
+                        <h3><?= htmlspecialchars($product['name']) ?></h3>
+                        <div class="product-price">₱<?= number_format((float) $product['price'], 2) ?></div>
+                        <p class="product-desc"><?= htmlspecialchars($product['description']) ?></p>
 
-                <!-- Product 2 -->
-                <div class="product-card">
-                    <div class="img-wrap"><img src="images/torquedrive.webp" alt="RS8 Torque Drive"></div>
-                    <h3>RS8 Torque Drive Half Sheeve</h3>
-                    <div class="product-price">₱1,680.00</div>
-                    <p class="product-desc">Race On! Highspeed Steel Torque Drive for Mio Soul GT 125</p>
-                    <div class="details-content">
-                        <ul class="product-features">
-                            <li>Touring and Race Proven</li><li>Performance Guaranteed</li><li>High Speed Profile Design</li><li>Precision Machining</li><li>Easy Tuning and Installation</li>
-                        </ul>
-                    </div>
-                    <div style="display: flex; gap: 10px; margin-top: 15px;">
-                        <button class="details-btn btn" style="flex: 1; background: #333;">View Details</button>
-                        <button class="add-to-cart-btn btn" style="flex: 1;" data-id="p2" data-name="RS8 Torque Drive Half Sheeve" data-price="1680.00" data-image="images/torquedrive.webp">Add to Cart</button>
-                    </div>
-                </div>
+                        <div class="details-content" id="details-content-<?= htmlspecialchars($product['id']) ?>">
+                            <ul class="product-features">
+                                <?php foreach ($product['features'] as $feature): ?>
+                                    <li><?= htmlspecialchars($feature) ?></li>
+                                <?php endforeach; ?>
+                            </ul>
+                        </div>
 
-                <!-- Product 3 -->
-                <div class="product-card">
-                    <div class="img-wrap"><img src="images/rs8bell.webp" alt="RS8 Performance Clutch Bell"></div>
-                    <h3>RS8 Performance Clutch Bell</h3>
-                    <div class="product-price">₱1,380.00</div>
-                    <p class="product-desc">Engineered for PCX, ADV, and Click</p>
-                    <div class="details-content">
-                        <ul class="product-features">
-                            <li>Anti Dragging Formula</li><li>Dynamically Balanced</li><li>Touring and Race Proven</li><li>Performance Guaranteed</li>
-                        </ul>
-                    </div>
-                    <div style="display: flex; gap: 10px; margin-top: 15px;">
-                        <button class="details-btn btn" style="flex: 1; background: #333;">View Details</button>
-                        <button class="add-to-cart-btn btn" style="flex: 1;" data-id="p3" data-name="RS8 Performance Clutch Bell" data-price="1380.00" data-image="images/rs8bell.webp">Add to Cart</button>
-                    </div>
-                </div>
+                        <div class="product-actions">
+                            <button type="button" class="details-btn btn" id="details-<?= htmlspecialchars($product['id']) ?>" data-testid="details-<?= htmlspecialchars($product['id']) ?>" aria-expanded="false" aria-controls="details-content-<?= htmlspecialchars($product['id']) ?>">View Details</button>
 
-                <!-- Product 4 -->
-                <div class="product-card">
-                    <div class="img-wrap"><img src="images/rs8clutchassy.webp" alt="RS8 Lightweight Clutch Master"></div>
-                    <h3>RS8 Clutch Master</h3>
-                    <div class="product-price">₱1,680.00</div>
-                    <p class="product-desc">Super Lightweight Clutch Master Assembly</p>
-                    <div class="details-content">
-                        <ul class="product-features">
-                            <li>Anti Dragging Formula</li><li>Touring and Race Proven</li><li>Performance Guaranteed</li>
-                        </ul>
-                    </div>
-                    <div style="display: flex; gap: 10px; margin-top: 15px;">
-                        <button class="details-btn btn" style="flex: 1; background: #333;">View Details</button>
-                        <button class="add-to-cart-btn btn" style="flex: 1;" data-id="p4" data-name="RS8 Clutch Master" data-price="1680.00" data-image="images/rs8clutchassy.webp">Add to Cart</button>
-                    </div>
-                </div>
+                            <div class="cart-control">
+                                <label class="sr-only" for="qty-<?= htmlspecialchars($product['id']) ?>">Quantity for <?= htmlspecialchars($product['name']) ?></label>
+                                <input type="number" class="qty-input" id="qty-<?= htmlspecialchars($product['id']) ?>" data-testid="qty-<?= htmlspecialchars($product['id']) ?>" value="1" min="1" max="99" inputmode="numeric">
+                                <button type="button" class="add-to-cart-btn btn" id="add-to-cart-<?= htmlspecialchars($product['id']) ?>" data-testid="add-to-cart-<?= htmlspecialchars($product['id']) ?>" data-id="<?= htmlspecialchars($product['id']) ?>">Add to Cart</button>
+                            </div>
 
-                <!-- Product 5 -->
-                <div class="product-card">
-                    <div class="img-wrap"><img src="images/rs8degreaser.webp" alt="RS8 Magic Degreaser"></div>
-                    <h3>RS8 Magic Degreaser</h3>
-                    <div class="product-price">₱150.00</div>
-                    <p class="product-desc">Shine, Protect, Clean and Degrease. Powerful Formula Cleans Quickly and Easily.</p>
-                    <div class="details-content">
-                        <ul class="product-features">
-                            <li>Magic Formulation for Engine, Plastic Parts, Chain</li>
-                        </ul>
+                            <p class="cart-feedback" id="cart-feedback-<?= htmlspecialchars($product['id']) ?>" data-testid="cart-feedback-<?= htmlspecialchars($product['id']) ?>" role="status" aria-live="polite"></p>
+                        </div>
                     </div>
-                    <div style="display: flex; gap: 10px; margin-top: 15px;">
-                        <button class="details-btn btn" style="flex: 1; background: #333;">View Details</button>
-                        <button class="add-to-cart-btn btn" style="flex: 1;" data-id="p5" data-name="RS8 Magic Degreaser" data-price="150.00" data-image="images/rs8degreaser.webp">Add to Cart</button>
-                    </div>
-                </div>
-
-                <!-- Product 6 -->
-                <div class="product-card">
-                    <div class="img-wrap"><img src="images/rs8cap.jpg" alt="RS8 Snapback Mesh Cap"></div>
-                    <h3>RS8 Snapback Mesh Cap</h3>
-                    <div class="product-price">₱680.00</div>
-                    <p class="product-desc">V1 Gray-White (Limited Edition) Team Apparel</p>
-                    <div class="details-content">
-                        <ul class="product-features">
-                            <li>Snapback</li><li>Flat Brim</li><li>Embroidery</li><li>High Quality</li><li>Cotton/Acrylic</li><li>Comes with String Bag</li>
-                        </ul>
-                    </div>
-                    <div style="display: flex; gap: 10px; margin-top: 15px;">
-                        <button class="details-btn btn" style="flex: 1; background: #333;">View Details</button>
-                        <button class="add-to-cart-btn btn" style="flex: 1;" data-id="p6" data-name="RS8 Snapback Mesh Cap" data-price="680.00" data-image="images/rs8cap.jpg">Add to Cart</button>
-                    </div>
-                </div>
+                <?php endforeach; ?>
             </div>
         </div>
     </section>
